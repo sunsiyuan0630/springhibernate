@@ -1,0 +1,12 @@
+com\ssy\havefunweb\model\Button.class
+com\ssy\havefunweb\util\MessageUtil.class
+com\ssy\havefunweb\model\ClickButton.class
+com\ssy\havefunweb\resources\ResWeixinVerify.class
+com\ssy\havefunweb\util\CheckUtil.class
+com\ssy\havefunweb\model\AttentionMessage.class
+com\ssy\havefunweb\model\Menu.class
+com\ssy\havefunweb\model\TextMessage.class
+com\ssy\havefunweb\util\WeixinUtil.class
+com\ssy\havefunweb\model\AccessToken.class
+com\ssy\havefunweb\resources\ResF3D.class
+com\ssy\havefunweb\model\ViewButton.class

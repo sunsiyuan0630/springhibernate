@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"  
+    xmlns:tx="http://www.springframework.org/schema/tx"  
+    xsi:schemaLocation="   
+            http://www.springframework.org/schema/beans    
+            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd   
+            http://www.springframework.org/schema/aop    
+            http://www.springframework.org/schema/aop/spring-aop-2.5.xsd   
+            http://www.springframework.org/schema/tx    
+            http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">  
+    <!-- 使用C3P0的连接池技术 -->  
+    <bean id="dataSource" destroy-method="close"  
+        class="com.mchange.v2.c3p0.ComboPooledDataSource">  
+        <property name="driverClass" value="com.mysql.jdbc.Driver" />  
+        <property name="jdbcUrl" value="jdbc:mysql://localhost/lottery" />  
+        <property name="user" value="root" />  
+        <property name="password" value="root" />  
+        <!-- 指定连接数据库连接池的最大连接数 -->  
+        <property name="maxPoolSize" value="20" />  
+        <!-- 指定连接数据库连接池的最小连接数 -->  
+        <property name="minPoolSize" value="1" />  
+        <!-- 指定连接数据库连接池的初始化连接数 -->  
+        <property name="initialPoolSize" value="1" />  
+        <!-- 指定连接数据库连接池的连接的最大空闲时间 -->  
+        <property name="maxIdleTime" value="20" />  
+    </bean>  
+  
+    <bean id="sessionFactory"  
+        class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">  
+        <property name="dataSource">  
+            <ref bean="dataSource" />  
+        </property>  
+<!--        <property name="packagesToScan">
+            <list>
+                <value>com.ssy.havefun.f3d.*</value>
+            </list>
+        </property>-->
+        <property name="annotatedClasses"> 
+            <list>      
+                <value>com.ssy.havefun.f3d.F3DEntity</value>                  
+            </list> 
+        </property>
+        <property name="hibernateProperties">  
+            <props>  
+                <prop key="dialect">  
+                    org.hibernate.dialect.MySQLDialect   
+                </prop>  
+                <prop key="format_sql">true</prop>  
+                <prop key="show_sql">true</prop>  
+<!--                <prop key="cache.use_query_cache">true</prop>  
+                <prop key="cache.provider_class">  
+                    org.hibernate.cache.HashtableCacheProvider   
+                </prop>  
+                <prop key="cache.provider_class">  
+                    org.hibernate.cache.EhCacheProvider   
+              </prop>  -->
+            </props>  
+        </property>  
+  
+           <!-- 针对xml而非注解方式的资源配置方式一 -->  
+             <!-- <property name="mappingResources"> <list>  
+            <value>com/javacrazyer/domain/user.hbm.xml</value> </list>  
+            </property> -->  
+            <!-- 针对xml而非注解方式的资源配置方式二 -->  
+             <!--<property name="mappingLocations"> <list> <value>  
+            classpath:com/javacrazyer/domain/user.hbm.xml </value> </list>  
+            </property>-->  
+           
+<!--        <property name="annotatedClasses">  
+            <list>  
+                <value>com.ssy.havefun.f3d.F3DEntity</value>  
+            </list>  
+        </property>  -->
+    </bean>  
+  
+       
+    <!--   
+        下面是Hibernate的事务管理器 ,如果是单独spring框架的项目中配置spring事务，那么就没有上边   
+        的sessionFactory而只会有dataSource,那么下面属性就不是sesionFactory而是DataSource了   
+    -->  
+    <bean id="transactionManager"  
+        class="org.springframework.orm.hibernate3.HibernateTransactionManager">  
+        <property name="sessionFactory" ref="sessionFactory" />  
+    </bean>  
+  
+    <!-- 启用注解方式的声明式事务支持 -->  
+    <tx:annotation-driven transaction-manager="transactionManager" />  
+    <context:component-scan base-package="com.ssy.havefun.f3d" />
+    <!-- =============================================== -->  
+<!--    <bean id="f3DDao" class="com.ssy.havefun.f3d.F3DDaoImpl">  
+        <property name="sessionFactory" ref="sessionFactory" />  
+    </bean>  -->
+  
+<!--    <bean id="sf" class="com.javacrazyer.service.ServiceFacade">  
+        <property name="userDao" ref="userDao" />  
+    </bean>  -->
+  
+</beans>
